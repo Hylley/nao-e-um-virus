@@ -42,3 +42,4 @@ luac.out
 # Project specifics
 build/
 tmp/
+.vscode/
