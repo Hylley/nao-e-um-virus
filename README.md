@@ -21,10 +21,10 @@ Por padrão os resultados da compilação são armazenados numa pasta chamada "b
 ```
 build/
 |-- x64/
-	|-- love.dll
-	|-- love.dll
+    |-- love.dll
+    |-- love.dll
 |-- x86/
-	|-- ...
+    |-- ...
 
 ```
 
