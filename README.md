@@ -19,13 +19,11 @@ make build run    :: Compila o projeto e executa o resultado
 ```
 Por padrão os resultados da compilação são armazenados numa pasta chamada "build" que obedece o esquema:
 ```
-build/
-|-- x64/
-    |-- love.dll
-    |-- love.dll
-|-- x86/
-    |-- ...
-
+.
+├── build/
+│   ├── x64/		# Versão do programa para computadores de 64 bits
+│   └── x86/		# Versão do programa para computadores de 32 bits
+└── ...
 ```
 
 ### Other
