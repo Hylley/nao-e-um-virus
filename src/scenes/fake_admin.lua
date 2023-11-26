@@ -76,12 +76,14 @@ end
 
 
 function scene.mousepressed(x, y, k, istouch)
-	if k == 1 then
-		if x > 609 - 10 and x < 609 + (close_button:getWidth() * .07) + 10 and y > 20 - 10 and y < 20 + (close_button:getHeight() * .07) + 10 then love.event.quit() end
+	if k ~= 1 then return end
+
+	if x > 609 - 10 and x < 609 + (close_button:getWidth() * .07) + 10 and y > 20 - 10 and y < 20 + (close_button:getHeight() * .07) + 10 then
+		love.event.quit()
 	end
 
 	if x > 36 and x < 36 + 288 and y > 370 and y < 370 + 50 then
-		print('Click')
+		game.load_scene('terminal')
 	end
 end
 
