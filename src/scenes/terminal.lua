@@ -5,6 +5,7 @@ local scroll_sensitivity = 30
 local scroll_offset = 0
 local scroll_limit = {top = 0, bottom = 0}
 local buffer = {}
+
 local input_text = ''
 
 local close_button
@@ -26,8 +27,9 @@ function scene.load()
 	for i=0, 50 do
 		append_to_buffer(name, 'saosaosnaosasas', {1, 0, 0, 1})
 	end
+	append_to_buffer(nil, 'saosaosnaosasas', {1, 0, 0, 1})
 
-	love.keyboard.setKeyRepeat(true)	
+	love.keyboard.setKeyRepeat(true)
 
 	close_button = love.graphics.newImage("assets/images/icons/white_close.png")
 	scroll_limit.bottom = 0
@@ -37,15 +39,20 @@ function scene.draw()
 	for i=#buffer, 1, -1 do
 		local message = buffer[i]
 		local font_size = 20
-		local spacing = 20
+		local spacing = 25
 
 		local y_pos = (love.graphics.getHeight() - font_size - spacing * (#buffer - i)) - 60
 
 		love.graphics.setNewFont("assets/fonts/Segoe UI.ttf", font_size)
-		-- Render name
-		love.graphics.print({message.color, message.user}, font_size, y_pos + scroll_offset)
-		-- Render text
-		love.graphics.print({{1, 1, 1, 1}, message.text}, 20 + love.graphics.getFont():getWidth(message.user) + 10, y_pos + scroll_offset)
+		if message.user ~= nil and message.user ~= '' then
+			-- Render name
+			love.graphics.print({message.color, message.user}, font_size, y_pos + scroll_offset)
+			-- Render text
+			love.graphics.print({{1, 1, 1, 1}, message.text}, 20 + love.graphics.getFont():getWidth(message.user) + 10, y_pos + scroll_offset)
+		else
+			-- Render text
+			love.graphics.print({{1, 1, 1, 1}, message.text}, font_size, y_pos + scroll_offset)
+		end
 
 		if y_pos < scroll_limit.top then scroll_limit.top = y_pos - 30 end
 	end
@@ -103,7 +110,11 @@ end
 
 function love.keypressed(key)
     if key == 'backspace' then
-		input_text = input_text:sub(1, -2)
+        local byteoffset = utf8.offset(input_text, -1)
+
+        if byteoffset then
+            input_text = string.sub(input_text, 1, byteoffset - 1)
+        end
     end
 end
 
