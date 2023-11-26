@@ -8,7 +8,7 @@ O principal requisito para executar o programa é ter um sistema compatível com
 
 Para instalar os drivers necessários (bem como verificar se o seu sistema é compatível) consulte a [página oficial de download do OpenGL](https://www.khronos.org/opengl/wiki/Getting_Started#Downloading_OpenGL).
 
-### Passos
+### Executar
 Depois de verificar todos os requisitos, basta clicar duas vezes no executável `not-a-virus.exe`. Se tudo correr bem, o programa será executado com sucesso.
 
 ## Compilação a partir do código-fonte
@@ -28,14 +28,14 @@ make run          :: Executa o projeto sem compilar
 ```
 make build run    :: Compila o projeto e executa o resultado
 ```
-Por padrão os resultados da compilação são armazenados numa pasta chamada especial que obedece o esquema:
+Por padrão os resultados da compilação são armazenados numa pasta especial chamada `build` que obedece o esquema:
 ```
 .
 ├── build
-│   ├── x64		:: Versão do programa para computadores operando em 64 bits
-│   └── x86		:: Versão do programa para computadores operando em 32 bits
+│   ├── x64		:: Arquivos do programa para computadores operando em 64 bits
+│   └── x86		:: Arquivos do programa para computadores operando em 32 bits
 └── ...
 ```
 
 ### Outros
-Definitivamente existe uma maneira de construir o programa para outros sistemas operacionais, como Linux. Mas isso provavelmente envolve vários comandos enigmáticos na linha de comando. Por enquanto, você pode acessar a [documentação oficial do Love2D aqui](https://love2d.org/wiki/Game_Distribution) e reunir informações úteis para fazer sua própria automação de build para o seu SO em particular.
+Definitivamente existe uma maneira de construir o programa para outros sistemas operacionais, como Linux. Mas isso deve envolver vários comandos enigmáticos na linha de comando. Por enquanto, você pode acessar a [documentação oficial do Love2D aqui](https://love2d.org/wiki/Game_Distribution) e reunir informações úteis para fazer sua própria automação de build para o seu SO em particular.
