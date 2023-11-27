@@ -85,7 +85,7 @@ function scene.mousepressed(x, y, k, istouch)
 	end
 
 	if x > 36 and x < 36 + 288 and y > 370 and y < 370 + 50 then
-		game.load_scene('presentation')
+		game.load_scene('story')
 	end
 end
 

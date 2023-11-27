@@ -14,4 +14,4 @@ if f ~= nil then
 	HOSTNAME = string.gsub(HOSTNAME, "\n$", "")
 end
 
-game.load_scene('fake_admin')
+game.load_scene('launcher')
