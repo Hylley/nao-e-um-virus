@@ -24,6 +24,8 @@ local lerp_speed = .1
 
 
 function story.begin()
+	-- terminal.lock()
+	
 	send_no_label('###############################################################')
 	send_no_label('Winlux Terminal [versão 10.0.17134.285ac%782*@@@@@3-estável]')
 	send_no_label('Copyright (c) Softmicro Foundation')

@@ -11,6 +11,10 @@ local terminal_font = 'assets/fonts/vt323-latin-400-normal.ttf'
 local input_text = ''
 scene.input_callback = nil
 
+local key_sound = love.audio.newSource('assets/sounds/key3.mp3', 'static'); key_sound:setVolume(.3)
+local backspace_sound = love.audio.newSource('assets/sounds/key1.mp3', 'static'); backspace_sound:setVolume(.3)
+local enter_sound = love.audio.newSource('assets/sounds/enter.mp3', 'static'); backspace_sound:setVolume(.3)
+
 local close_button
 
 function scene.append_to_buffer(user, text, color)
@@ -124,18 +128,21 @@ function scene.keypressed(key)
             input_text = string.sub(input_text, 1, byteoffset - 1)
         end
 
+		backspace_sound:play()
 		return
     end
 
 	if not locked and key == 'return' and scene.input_callback ~= nil then
 		scene.input_callback(input_text)
 		input_text = ''
+		enter_sound:play()
 	end
 end
 
 function scene.textinput(t)
 	if locked then return end
     input_text = input_text .. t
+	key_sound:play()
 end
 
 function scene.reset_buffer()

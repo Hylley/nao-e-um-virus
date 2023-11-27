@@ -11,6 +11,8 @@ function scene.load()
 	admin_dialog = love.graphics.newImage("assets/images/admin_dialog_background.png")
 	love.window.setMode(admin_dialog:getWidth(), admin_dialog:getHeight(), {resizable = false, borderless = true})
 
+	love.audio.newSource('assets/sounds/uac.mp3', 'static'):play()
+
 	close_button = love.graphics.newImage("assets/images/icons/close.png")
 end
 

@@ -8,7 +8,7 @@ O requisito mínimo para executar o jogo é ter um sistema compatível com OpenG
 Para instalar os drivers necessários, bem como verificar a compatibilidade do seu sistema, consulte a [página oficial de download do OpenGL](https://www.khronos.org/opengl/wiki/Getting_Started#Downloading_OpenGL).
 
 ## Instalação
-Após verificar todos os requisitos, você pode baixar a versão compatível com o seu sistema na [aba de lançamentos](https://github.com/Hylley/nao-e-um-virus/releases) e clicar duas vezes no executável `not-a-virus.exe`. Se tudo correr bem, o jogo será executado.
+Após verificar todos os requisitos, você pode baixar a versão compatível com o seu sistema na [aba de lançamentos](https://github.com/Hylley/nao-e-um-virus/releases) e clicar duas vezes no executável `não-é-um-vírus.exe`. Se tudo correr bem, o jogo será executado.
 
 ## Construção
 ### Dependências
@@ -40,4 +40,4 @@ Por padrão, os resultados da compilação são armazenados numa pasta especial 
 ```
 
 ### Outros
-Definitivamente, existe uma maneira de construir o programa para outros sistemas operacionais, como Linux. Mas isso deve envolver vários comandos enigmáticos na linha de comando. Por enquanto, você pode acessar a [documentação oficial do Love2D aqui](https://love2d.org/wiki/Game_Distribution) e reunir informações úteis para fazer sua própria automação de build para o seu SO em particular.
+Definitivamente, existe uma maneira de construir o programa para outros sistemas operacionais, como Linux. Eu não recomendaria, já que o jogo acessa funcionalidaes específicas alvos do Windows 10/11, além de que isso deve envolver vários comandos enigmáticos na linha de comando. Por enquanto, você pode acessar a [documentação oficial do Love2D aqui](https://love2d.org/wiki/Game_Distribution) e reunir informações úteis para fazer sua própria automação de build para o seu SO em particular.
