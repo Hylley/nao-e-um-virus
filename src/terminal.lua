@@ -7,27 +7,24 @@ local scroll_limit = {top = 0, bottom = 0}
 local buffer = {}
 
 local input_text = ''
+scene.input_callback = nil
 
 local close_button
 
-local function append_to_buffer(user, text, color)
-	buffer[#buffer + 1] = {user = user, text = text, color = color}
-end
+function scene.append_to_buffer(user, text, color)
+	if user == nil or user == '' then
+		buffer[#buffer + 1] = {user = nil, text = text, color = color}
+		return
+	end
 
----------------------------------------
+	buffer[#buffer + 1] = {user = '['..user..']', text = text, color = color}
+end
 
 function scene.load()
 	love.window.setTitle('Terminal')
 	love.window.setIcon(love.image.newImageData("assets/images/icons/terminal.png"))
 	love.graphics.setBackgroundColor(.04705882353, .04705882353, .04705882353)
 	love.window.setMode(800, 500, {resizable = false, borderless = true})
-
-	local name = os.getenv('USERNAME')
-	
-	for i=0, 50 do
-		append_to_buffer(name, 'saosaosnaosasas', {1, 0, 0, 1})
-	end
-	append_to_buffer(nil, 'saosaosnaosasas', {1, 0, 0, 1})
 
 	love.keyboard.setKeyRepeat(true)
 
@@ -44,7 +41,7 @@ function scene.draw()
 		local y_pos = (love.graphics.getHeight() - font_size - spacing * (#buffer - i)) - 60
 
 		love.graphics.setNewFont("assets/fonts/Segoe UI.ttf", font_size)
-		if message.user ~= nil and message.user ~= '' then
+		if message.user ~= nil then
 			-- Render name
 			love.graphics.print({message.color, message.user}, font_size, y_pos + scroll_offset)
 			-- Render text
@@ -90,6 +87,10 @@ function scene.wheelmoved(x, y)
 	scroll_offset = scroll_offset + y * scroll_sensitivity
 end
 
+function scene.descend()
+	scroll_offset = 0
+end
+
 function scene.mousemoved(x, y, dx, dy, istouch)
 	if x > 775 - 10 and x < 775 + (close_button:getWidth() * .05) + 10 and y > 10 - 10 and y < 10 + (close_button:getHeight() * .05) + 10 then
 		love.mouse.setCursor(love.mouse.getSystemCursor("hand"))
@@ -108,14 +109,21 @@ function scene.mousepressed(x, y, k, istouch)
 	end
 end
 
-function love.keypressed(key)
+function scene.keypressed(key)
     if key == 'backspace' then
         local byteoffset = utf8.offset(input_text, -1)
 
         if byteoffset then
             input_text = string.sub(input_text, 1, byteoffset - 1)
         end
+
+		return
     end
+
+	if key == 'return' and scene.input_callback ~= nil then
+		scene.input_callback(input_text)
+		input_text = ''
+	end
 end
 
 function scene.textinput(t)
