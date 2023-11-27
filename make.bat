@@ -6,7 +6,10 @@ set love_path_x64="C:\Program Files\LOVE\"
 set love_path_x86="C:\Program Files (x86)\LOVE"
 
 if %1==build goto build
-if %1==run goto run_test
+if %1==run (
+	love src
+	exit /B
+)
 
 :build
 	:: Prepare the project root folder
@@ -33,15 +36,5 @@ if %1==run goto run_test
 	:: Cleanup
 	rmdir /s /q tmp
 
-	if %2==run goto run_build
-	exit /B
-
-
-:run_test
-	love src
-	exit /B
-
-
-:run_build
-	"build\x64\%executable%.exe"
+	if %2==run "build\x64\%executable%.exe"
 	exit /B

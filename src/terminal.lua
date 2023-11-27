@@ -5,7 +5,9 @@ local scroll_sensitivity = 30
 local scroll_offset = 0
 local scroll_limit = {top = 0, bottom = 0}
 local buffer = {}
+local locked = false
 
+local terminal_font = 'assets/fonts/vt323-latin-400-normal.ttf'
 local input_text = ''
 scene.input_callback = nil
 
@@ -18,6 +20,8 @@ function scene.append_to_buffer(user, text, color)
 	end
 
 	buffer[#buffer + 1] = {user = '['..user..']', text = text, color = color}
+
+	scene.descend()
 end
 
 function scene.load()
@@ -39,8 +43,9 @@ function scene.draw()
 		local spacing = 25
 
 		local y_pos = (love.graphics.getHeight() - font_size - spacing * (#buffer - i)) - 60
+		if y_pos + scroll_offset + font_size < - 1 then goto continue end
 
-		love.graphics.setNewFont("assets/fonts/Segoe UI.ttf", font_size)
+		love.graphics.setNewFont(terminal_font, font_size)
 		if message.user ~= nil then
 			-- Render name
 			love.graphics.print({message.color, message.user}, font_size, y_pos + scroll_offset)
@@ -50,6 +55,8 @@ function scene.draw()
 			-- Render text
 			love.graphics.print({{1, 1, 1, 1}, message.text}, font_size, y_pos + scroll_offset)
 		end
+
+		::continue::
 
 		if y_pos < scroll_limit.top then scroll_limit.top = y_pos - 30 end
 	end
@@ -67,9 +74,9 @@ function scene.draw()
 	love.graphics.setColor(1, 1, 1)
 	love.graphics.draw(close_button, 775, 10, 0, .05, .05)
 
-	love.graphics.setNewFont("assets/fonts/Segoe UI.ttf", 16)
+	love.graphics.setNewFont('assets/fonts/Segoe UI.ttf', 16)
 	love.graphics.print({{1, 1, 1, 1}, "Terminal"}, 20, 5)
-	love.graphics.setNewFont("assets/fonts/Segoe UI.ttf", 20)
+	love.graphics.setNewFont(terminal_font, 20)
 
 	love.graphics.print({{.5, .5, .5, 1}, ">"}, margin + 5, love.graphics.getHeight() - height - margin + 15)
 	love.graphics.print({{.5, .5, .5, 1}, "_"}, margin + 30 + love.graphics.getFont():getWidth(input_text), love.graphics.getHeight() - height - margin + 15)
@@ -110,7 +117,7 @@ function scene.mousepressed(x, y, k, istouch)
 end
 
 function scene.keypressed(key)
-    if key == 'backspace' then
+    if not locked and key == 'backspace' then
         local byteoffset = utf8.offset(input_text, -1)
 
         if byteoffset then
@@ -120,15 +127,31 @@ function scene.keypressed(key)
 		return
     end
 
-	if key == 'return' and scene.input_callback ~= nil then
+	if not locked and key == 'return' and scene.input_callback ~= nil then
 		scene.input_callback(input_text)
 		input_text = ''
 	end
 end
 
 function scene.textinput(t)
+	if locked then return end
     input_text = input_text .. t
 end
 
+function scene.reset_buffer()
+	buffer = {}
+	scroll_offset = 0
+	scroll_limit.top = 0
+	scroll_limit.bottom = 0
+end
+
+function scene.lock()
+	locked = true
+	input_text = ''
+end
+
+function scene.unlock()
+	locked = false
+end
 
 return scene

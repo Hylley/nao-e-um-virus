@@ -1,6 +1,7 @@
 module = {}
 
 local scheduled = {}
+local time = 0
 
 function module.tick(delta)
 	for callback, info in pairs(scheduled) do
@@ -17,8 +18,9 @@ function module.schedule(callback, seconds)
 	scheduled[callback] = {deadline = seconds, foretime = 0}
 end
 
-function module.sleep(seconds)
-	if seconds > 0 then os.execute("ping -n " .. tonumber(seconds+1) .. " localhost > NUL") end
+function module.after(seconds)
+	time = time + seconds
+	return time
 end
 
 return module

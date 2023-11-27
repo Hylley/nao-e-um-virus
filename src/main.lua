@@ -1,4 +1,8 @@
 game = require 'game'
+utils = require 'utils'
+
+math.randomseed(os.time())
+
 
 USERNAME = os.getenv('USERNAME')
 HOSTNAME = 'phoenixNAP'
