@@ -24,7 +24,7 @@ local lerp_speed = .1
 
 
 function story.begin()
-	-- terminal.lock()
+	terminal.lock()
 	
 	send_no_label('###############################################################')
 	send_no_label('Winlux Terminal [versão 10.0.17134.285ac%782*@@@@@3-estável]')
@@ -81,7 +81,7 @@ function story.first_interaction()
 	auto_schedule_send_as_hacker('Digo, pra ter feito uma besteira dessas, é a única explicação')
 	auto_schedule_send_as_hacker('Bom, vitória minha, já que agora eu tenho controle do seu computador')
 	time.schedule(function () send_as_hacker('O quê?') end, time.after(4))
-	auto_schedule_send_as_hacker('Você não acredita em mim?')
+	auto_schedule_send_as_hacker('Você não acredita em mim, '..USERNAME..'?')
 
 	local cmd = utils.capture('pnputil /enum-devices /class Camera /connected')
 	if cmd:find('Iniciado') or cmd:find('Started') then
