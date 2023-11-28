@@ -133,9 +133,7 @@ function scene.interpreter.help()
 	scene.send_no_label 'shut (conexão)  | Desliga uma conexão à força.'
 end
 
-function scene.interpreter.clss()
-	scene.clear_buffer()
-end
+function scene.interpreter.clss() scene.clear_buffer() end
 
 function scene.interpreter.list()
 	
@@ -210,28 +208,28 @@ function scene.mousepressed(x, y, k, istouch)
 end
 
 function scene.keypressed(key)
-    if key == 'space' then
-		time.forward()
-		return
-	end
-
-	if locked then return end
-
-	if key == 'backspace' then
-        local byteoffset = utf8.offset(input_text, -1)
-
-        if byteoffset then
-            input_text = string.sub(input_text, 1, byteoffset - 1)
-        end
-
-		backspace_sound:play()
-		return
-    end
-
-	if key == 'return' and scene.input_callback ~= nil then
-		scene.input_callback(input_text)
-		input_text = ''
-		enter_sound:play()
+	if locked then
+		if key == 'space' then
+			time.forward()
+			return
+		end
+	else
+		if key == 'backspace' then
+			local byteoffset = utf8.offset(input_text, -1)
+	
+			if byteoffset then
+				input_text = string.sub(input_text, 1, byteoffset - 1)
+			end
+	
+			backspace_sound:play()
+			return
+		end
+	
+		if key == 'return' and scene.input_callback ~= nil then
+			scene.input_callback(input_text)
+			input_text = ''
+			enter_sound:play()
+		end
 	end
 end
 
