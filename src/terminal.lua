@@ -17,9 +17,11 @@ local terminal_font = 'assets/fonts/vt323-latin-400-normal.ttf'
 local input_text = ''
 scene.input_callback = nil
 
-local key_sound = love.audio.newSource('assets/sounds/key3.mp3', 'static'); key_sound:setVolume(.3)
-local backspace_sound = love.audio.newSource('assets/sounds/key1.mp3', 'static'); backspace_sound:setVolume(.3)
-local enter_sound = love.audio.newSource('assets/sounds/enter.mp3', 'static'); backspace_sound:setVolume(.3)
+local key_sound = love.audio.newSource('assets/sounds/key.wav', 'static'); key_sound:setVolume(.2)
+local backspace_sound = love.audio.newSource('assets/sounds/backspace.wav', 'static'); backspace_sound:setVolume(.2)
+local enter_sound = love.audio.newSource('assets/sounds/enter.wav', 'static'); backspace_sound:setVolume(.2)
+local new_message_sound = love.audio.newSource('assets/sounds/new_message.wav', 'static'); backspace_sound:setVolume(.3)
+local clear_terminal_sound = love.audio.newSource('assets/sounds/clear_terminal.wav', 'static'); backspace_sound:setVolume(.1)
 
 local close_button
 
@@ -32,6 +34,7 @@ function scene.append_to_buffer(user, text, color)
 	buffer[#buffer + 1] = {user = '['..user..']', text = text, color = color}
 
 	scene.descend()
+	new_message_sound:play()
 end
 
 function scene.load()
@@ -121,12 +124,17 @@ end
 
 function scene.interpreter.help()
 	scene.send_no_label 'help            | Mostra os comandos disponívels;'
+	scene.send_no_label 'clss            | Limpa o terminal;'
 	scene.send_no_label 'list            | Lista os arquivos e diretórios do caminho atual;'
 	scene.send_no_label 'cdir (caminho)  | Muda para o diretório especificado;'
 	scene.send_no_label 'open (caminho)  | Abre ou executa o arquivo especificado;'
 	scene.send_no_label 'info (caminho)  | Mostra informações sobre um diretório ou arquivo;'
 	scene.send_no_label 'stat            | Mostra todas as conexões à rede ativas;'
 	scene.send_no_label 'shut (conexão)  | Desliga uma conexão à força.'
+end
+
+function scene.interpreter.clss()
+	scene.clear_buffer()
 end
 
 function scene.interpreter.list()
@@ -163,6 +171,8 @@ function scene.clear_buffer()
 	scroll_offset = 0
 	scroll_limit.top = 0
 	scroll_limit.bottom = 0
+
+	clear_terminal_sound:play()
 end
 
 function scene.lock()

@@ -6,6 +6,8 @@ math.randomseed(os.time())
 USERNAME = os.getenv('USERNAME')
 HOSTNAME = 'phoenixNAP'
 
+os.execute 'powershell (New-Object -ComObject Shell.Application).MinimizeAll()'
+
 local f = io.popen("hostname")
 if f ~= nil then
 	HOSTNAME = f:read("*a") or HOSTNAME
