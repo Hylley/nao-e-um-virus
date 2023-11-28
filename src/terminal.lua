@@ -124,22 +124,22 @@ end
 
 function scene.interpreter.help()
 	scene.send_no_label 'help            | Mostra os comandos disponívels;'
-	scene.send_no_label 'clss            | Limpa o terminal;'
+	scene.send_no_label 'wipe            | Limpa o terminal;'
 	scene.send_no_label 'list            | Lista os arquivos e diretórios do caminho atual;'
-	scene.send_no_label 'cdir (caminho)  | Muda para o diretório especificado;'
+	scene.send_no_label 'move (caminho)  | Muda para o diretório especificado;'
 	scene.send_no_label 'open (caminho)  | Abre ou executa o arquivo especificado;'
 	scene.send_no_label 'info (caminho)  | Mostra informações sobre um diretório ou arquivo;'
-	scene.send_no_label 'stat            | Mostra todas as conexões à rede ativas;'
+	scene.send_no_label 'link            | Mostra todas as conexões à rede ativas;'
 	scene.send_no_label 'shut (conexão)  | Desliga uma conexão à força.'
 end
 
-function scene.interpreter.clss() scene.clear_buffer() end
+function scene.interpreter.wipe() scene.clear_buffer() end
 
 function scene.interpreter.list()
 	
 end
 
-function scene.interpreter.cdir(path)
+function scene.interpreter.move(path)
 	
 end
 
@@ -151,7 +151,7 @@ function scene.interpreter.info(path)
 	
 end
 
-function scene.interpreter.stat()
+function scene.interpreter.link()
 	scene.send_no_label 'Você não tem permissão para executar esse comando.'
 end
 
