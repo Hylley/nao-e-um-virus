@@ -1,9 +1,11 @@
 local utf8 = require'utf8'
 local time = require 'time'
+
 local scene = {}
 
-local user = nil
-local hacker = nil
+local user = {}
+local hacker = {}
+scene.interpreter = {}
 
 local scroll_sensitivity = 30
 local scroll_offset = 0
@@ -100,33 +102,53 @@ function scene.draw()
 	end
 end
 
-function scene.send_as_user(text)
-	scene.append_to_buffer(user.id, text, {1, .7, 0, 1})
+function scene.send_as_user  (text) scene.append_to_buffer(user.id,   text, {1, .7, 0, 1}  ) end
+function scene.send_as_system(text) scene.append_to_buffer('SISTEMA', text, {.3, .8, .9, 1}) end
+function scene.send_as_hacker(text)	scene.append_to_buffer(hacker.id, text, {.9, .3, .5, 1}) end
+function scene.send_unknown  (text) scene.append_to_buffer('???',     text, {.6, .6, .6, 1}) end
+function scene.send_as_amy   (text) scene.append_to_buffer('AMY',     text, {0, 1, .4, 1}  ) end
+function scene.send_no_label (text) scene.append_to_buffer(nil,       text, nil            ) end
+
+------------------- Interpreter
+
+function scene.interpreter.help()
+	scene.send_no_label('help            | Mostra os comandos disponívels;')
+	scene.send_no_label('list            | Lista os arquivos e diretórios do caminho atual;')
+	scene.send_no_label('cdir (caminho)  | Muda para o diretório especificado;')
+	scene.send_no_label('open (caminho)  | Abre ou executa o arquivo especificado;')
+	scene.send_no_label('info (caminho)  | Mostra informações sobre um diretório ou arquivo;')
+	scene.send_no_label('stat            | Mostra todas as conexões à rede ativas;')
+	scene.send_no_label('shut (conexão)  | Desliga uma conexão à força.')
 end
 
-function scene.send_as_system(text)
-	scene.append_to_buffer('SISTEMA', text, {.3, .8, .9, 1})
+function scene.interpreter.list()
+	
 end
 
-function scene.send_as_hacker(text)
-	scene.append_to_buffer(hacker.id, text, {.9, .3, .5, 1})
+function scene.interpreter.cdir(path)
+	
 end
 
-function scene.send_unknown(text)
-	scene.append_to_buffer('???', text, {.6, .6, .6, 1})
+function scene.interpreter.open(path)
+	
 end
 
-function scene.send_as_amy(text)
-	scene.append_to_buffer('AMY', text, {0, 1, .4, 1})
+function scene.interpreter.info(path)
+	
 end
 
-function scene.send_no_label(text)
-	scene.append_to_buffer(nil, text, nil)
+function scene.interpreter.stat()
+	scene.send_no_label('Você não tem permissão para executar esse comando.')
 end
 
-function scene.descend()
-	scroll_offset = 0
+function scene.interpreter.shut(connection)
+	scene.send_no_label('Você não tem permissão para executar esse comando.')
 end
+
+
+-------------------
+
+function scene.descend() scroll_offset = 0 end
 
 function scene.clear_buffer()
 	buffer = {}
