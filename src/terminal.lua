@@ -35,18 +35,18 @@ function scene.append_to_buffer(user, text, color)
 end
 
 function scene.load()
-	love.window.setTitle('Terminal')
+	love.window.setTitle 'Terminal'
 	love.window.setIcon(love.image.newImageData("assets/images/icons/terminal.png"))
 	love.graphics.setBackgroundColor(.04705882353, .04705882353, .04705882353)
 	love.window.setMode(800, 500, {resizable = false, borderless = true})
 
 	love.keyboard.setKeyRepeat(true)
 
-	close_button = love.graphics.newImage("assets/images/icons/white_close.png")
+	close_button = love.graphics.newImage 'assets/images/icons/white_close.png'
 	scroll_limit.bottom = 0
 end
 
-function scene.set_data(new_user, new_hacker, command_callback)
+function scene.set_data(new_user, new_hacker)
 	user = new_user
 	hacker = new_hacker
 end
@@ -102,23 +102,31 @@ function scene.draw()
 	end
 end
 
-function scene.send_as_user  (text) scene.append_to_buffer(user.id,   text, {1, .7, 0, 1}  ) end
-function scene.send_as_system(text) scene.append_to_buffer('SISTEMA', text, {.3, .8, .9, 1}) end
-function scene.send_as_hacker(text)	scene.append_to_buffer(hacker.id, text, {.9, .3, .5, 1}) end
-function scene.send_unknown  (text) scene.append_to_buffer('???',     text, {.6, .6, .6, 1}) end
-function scene.send_as_amy   (text) scene.append_to_buffer('AMY',     text, {0, 1, .4, 1}  ) end
-function scene.send_no_label (text) scene.append_to_buffer(nil,       text, nil            ) end
+function scene.send_as_user   (text) scene.append_to_buffer(user.id,   text, { 1, .7,  0, 1}) end
+function scene.send_as_system (text) scene.append_to_buffer('SISTEMA', text, {.3, .8, .9, 1}) end
+function scene.send_as_hacker (text) scene.append_to_buffer(hacker.id, text, {.9, .3, .5, 1}) end
+function scene.send_unknown   (text) scene.append_to_buffer('???',     text, {.6, .6, .6, 1}) end
+function scene.send_as_amy    (text) scene.append_to_buffer('AMY',     text, { 0,  1, .4, 1}) end
+function scene.send_no_label  (text) scene.append_to_buffer(nil,       text, nil            ) end
+
+function scene.prompt(sender, text, delay)
+	delay = delay or text:len() * .1
+
+	time.append(function ()
+		sender(text)
+	end, delay)
+end
 
 ------------------- Interpreter
 
 function scene.interpreter.help()
-	scene.send_no_label('help            | Mostra os comandos disponívels;')
-	scene.send_no_label('list            | Lista os arquivos e diretórios do caminho atual;')
-	scene.send_no_label('cdir (caminho)  | Muda para o diretório especificado;')
-	scene.send_no_label('open (caminho)  | Abre ou executa o arquivo especificado;')
-	scene.send_no_label('info (caminho)  | Mostra informações sobre um diretório ou arquivo;')
-	scene.send_no_label('stat            | Mostra todas as conexões à rede ativas;')
-	scene.send_no_label('shut (conexão)  | Desliga uma conexão à força.')
+	scene.send_no_label 'help            | Mostra os comandos disponívels;'
+	scene.send_no_label 'list            | Lista os arquivos e diretórios do caminho atual;'
+	scene.send_no_label 'cdir (caminho)  | Muda para o diretório especificado;'
+	scene.send_no_label 'open (caminho)  | Abre ou executa o arquivo especificado;'
+	scene.send_no_label 'info (caminho)  | Mostra informações sobre um diretório ou arquivo;'
+	scene.send_no_label 'stat            | Mostra todas as conexões à rede ativas;'
+	scene.send_no_label 'shut (conexão)  | Desliga uma conexão à força.'
 end
 
 function scene.interpreter.list()
@@ -138,11 +146,11 @@ function scene.interpreter.info(path)
 end
 
 function scene.interpreter.stat()
-	scene.send_no_label('Você não tem permissão para executar esse comando.')
+	scene.send_no_label 'Você não tem permissão para executar esse comando.'
 end
 
 function scene.interpreter.shut(connection)
-	scene.send_no_label('Você não tem permissão para executar esse comando.')
+	scene.send_no_label 'Você não tem permissão para executar esse comando.'
 end
 
 

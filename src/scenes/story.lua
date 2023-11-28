@@ -42,16 +42,7 @@ function scene.update(delta)
 end
 
 function scene.process_command(text)
-	print(text)
 	terminal.send_as_user(text)
-end
-
-function scene.prompt(sender, text, delay)
-	delay = delay or text:len() * .1
-
-	time.append(function ()
-		sender(text)
-	end, delay)
 end
 
 ------------------------ STORY
@@ -60,59 +51,59 @@ end
 function scene.being_story()
 	terminal.lock()
 
-	terminal.send_no_label('###############################################################')
-	terminal.send_no_label('Winlux Terminal [versão 10.0.17134.285ac%782*@@@@@3-estável]')
-	terminal.send_no_label('Copyright (c) Softmicro Foundation')
-	terminal.send_no_label('Consulte a licença')
-	terminal.send_no_label('###############################################################')
-	terminal.send_no_label('')
+	terminal.send_no_label '###############################################################'
+	terminal.send_no_label 'Terminal Winlux [versão 10.0.17134.285ac%782*@3-stable]'
+	terminal.send_no_label 'Copyright (c) Softmicro Foundation'
+	terminal.send_no_label 'Consulte a licença'
+	terminal.send_no_label '###############################################################'
+	terminal.send_no_label ''
 
-	scene.prompt(terminal.send_as_system, 'Processando requisição...', 5)
-	scene.prompt(terminal.send_as_system, 'Pacote de reconhecimento enviado;', 4)
+	terminal.prompt(terminal.send_as_system, 'Processando requisição...', 5)
+	terminal.prompt(terminal.send_as_system, 'Pacote de reconhecimento enviado;', 4)
 
 	for i = 1, 15 do
-		scene.prompt(terminal.send_as_system, 'Escutando na porta '..user.port..'...', 1)
+		terminal.prompt(terminal.send_as_system, 'Escutando na porta '..user.port..'...', 1)
 	end
 
-	scene.prompt(terminal.send_as_system, 'Resposta recebida;', 5)
-	scene.prompt(terminal.send_as_system, 'Finalizando aperto de mão;', 5.5)
-	scene.prompt(terminal.send_as_system, 'Conexão estabelecida;', 4)
-	scene.prompt(terminal.send_as_system, 'Sincronizando dados...', 1)
+	terminal.prompt(terminal.send_as_system, 'Resposta recebida;', 5)
+	terminal.prompt(terminal.send_as_system, 'Finalizando aperto de mão;', 5.5)
+	terminal.prompt(terminal.send_as_system, 'Conexão estabelecida;', 4)
+	terminal.prompt(terminal.send_as_system, 'Sincronizando dados...', 1)
 
 	for line in love.filesystem.lines('assets/glitch.txt') do
-		scene.prompt(terminal.send_no_label, line, .01)
+		terminal.prompt(terminal.send_no_label, line, .01)
 	end
 
 	time.append(terminal.clear_buffer, 1)
-	scene.prompt(terminal.send_as_system, 'Conexão estabelecida com '..hacker.ip..' na porta '..hacker.port..'.', 2)
+	terminal.prompt(terminal.send_as_system, 'Conexão estabelecida com '..hacker.ip..' na porta '..hacker.port..'.', 2)
 
-	scene.prompt(terminal.send_as_hacker, 'oi!', 5)
-	scene.prompt(terminal.send_as_hacker, 'hã...eu não sei qual é a melhor forma de dizer isso...', 5)
-	scene.prompt(terminal.send_as_hacker, 'você acabou de ser infectado', 5)
-	scene.prompt(terminal.send_as_hacker, 'o arquivo que você abriu se chamava literalmente "não-é-um-vírus.exe"')
-	scene.prompt(terminal.send_as_hacker, 'é como carregar uma placa enorme escrito "eu sou um vírus"')
-	scene.prompt(terminal.send_as_hacker, 'e mesmo assim você clicou...')
-	scene.prompt(terminal.send_as_hacker, 'eu não me surpreenderia se você me disser que já clicou num daqueles...')
-	scene.prompt(terminal.send_as_hacker, '...anúncios de mães solteiras na sua área também', 0.1)
-	scene.prompt(terminal.send_as_hacker, 'não me entenda errado, eu fico agradecido pelo que fez')
-	scene.prompt(terminal.send_as_hacker, 'agora eu tenho acesso completo a todas as suas senhas, contas e informações')
-	scene.prompt(terminal.send_as_hacker, 'mas mesmo assim, ainda sinto pena sua')
-	scene.prompt(terminal.send_as_hacker, 'eu sou um hacker, não um monstro, tá?')
-	scene.prompt(terminal.send_as_hacker, 'e vou entender se você não acreditar em mim, '..USERNAME)
-	scene.prompt(terminal.send_as_hacker, 'você tem mesmo a cara de quem não confia muito nas pessoas')
+	terminal.prompt(terminal.send_as_hacker, 'oi!', 5)
+	terminal.prompt(terminal.send_as_hacker, 'hã...eu não sei qual é a melhor forma de dizer isso...', 5)
+	terminal.prompt(terminal.send_as_hacker, 'você acabou de ser infectado', 5)
+	terminal.prompt(terminal.send_as_hacker, 'o arquivo que você abriu se chamava literalmente "não-é-um-vírus.exe"')
+	terminal.prompt(terminal.send_as_hacker, 'é como carregar uma placa enorme escrito "eu sou um vírus"')
+	terminal.prompt(terminal.send_as_hacker, 'e mesmo assim você clicou...')
+	terminal.prompt(terminal.send_as_hacker, 'eu não me surpreenderia se você me disser que já clicou num daqueles...')
+	terminal.prompt(terminal.send_as_hacker, '...anúncios de mães solteiras na sua área também', 0.1)
+	terminal.prompt(terminal.send_as_hacker, 'não me entenda errado, eu fico agradecido pelo que fez')
+	terminal.prompt(terminal.send_as_hacker, 'agora eu tenho acesso completo a todas as suas senhas, contas e informações')
+	terminal.prompt(terminal.send_as_hacker, 'mas mesmo assim, ainda sinto pena sua')
+	terminal.prompt(terminal.send_as_hacker, 'eu sou um hacker, não um monstro, tá?')
+	terminal.prompt(terminal.send_as_hacker, 'e vou entender se você não acreditar em mim, '..USERNAME)
+	terminal.prompt(terminal.send_as_hacker, 'você tem mesmo a cara de quem não confia muito nas pessoas')
 
-	local cmd = utils.capture('pnputil /enum-devices /class Camera /connected')
-	if cmd:find('Iniciado') or cmd:find('Started') then
-		scene.prompt(terminal.send_as_hacker, 'literalmente, eu consigo ver a sua câmera')
+	local cmd = utils.capture 'pnputil /enum-devices /class Camera /connected'
+	if cmd:find 'Iniciado' or cmd:find 'Started' then
+		terminal.prompt(terminal.send_as_hacker, 'literalmente, eu consigo ver a sua câmera')
 		time.append(function () os.execute('start microsoft.windows.camera:') end, 4)
 		time.append(function () os.execute('taskkill /f /im WindowsCamera.exe') end, 5)
-		scene.prompt(terminal.send_as_hacker, 'esse não é o rosto de quem põe fé na minha história', 2)
+		terminal.prompt(terminal.send_as_hacker, 'esse não é o rosto de quem põe fé na minha história', 2)
 	else
-		scene.prompt(terminal.send_as_hacker, 'você não acredita que eu tenho controle do seu computador')
-		scene.prompt(terminal.send_as_hacker, 'perfeitamente compreensível.')
+		terminal.prompt(terminal.send_as_hacker, 'você não acredita que eu tenho controle do seu computador')
+		terminal.prompt(terminal.send_as_hacker, 'perfeitamente compreensível.')
 	end
 
-	scene.prompt(terminal.send_as_hacker, 'nesse caso, olha só o que eu sei fazer...')
+	terminal.prompt(terminal.send_as_hacker, 'nesse caso, olha só o que eu sei fazer...')
 
 	local window_x, window_y, window_displayindex = love.window.getPosition()
 	time.append(function ()
@@ -140,31 +131,29 @@ function scene.being_story()
 		lerp_to = {x = window_x, y = window_y}
 	end, 1)
 
-	time.append(function () lerp_window = false end, 1)
+	time.append(function() lerp_window = false end, 1)
 
-	scene.prompt(terminal.send_as_hacker, 'legal, né?')
-	scene.prompt(terminal.send_as_hacker, 'enfim, preciso ir')
-	scene.prompt(terminal.send_as_hacker, 'algum idiota abriu o meu malware...')
-	scene.prompt(terminal.send_as_hacker, '...então eu vou copiar os dados do computador dele')
-	scene.prompt(terminal.send_as_hacker, 'entendeu?', 2)
-	scene.prompt(terminal.send_as_hacker, 'entendeu?')
-	scene.prompt(terminal.send_as_hacker, 'é engraçado porque esse idiota é você')
-	scene.prompt(terminal.send_as_hacker, 'enfim, aproveite seus últimos momentos de paz...')
-	scene.prompt(terminal.send_as_hacker, '...porque em breve, o histórico do seu navegador será público', 3)
+	terminal.prompt(terminal.send_as_hacker, 'legal, né?')
+	terminal.prompt(terminal.send_as_hacker, 'enfim, preciso ir')
+	terminal.prompt(terminal.send_as_hacker, 'algum idiota abriu o meu malware...')
+	terminal.prompt(terminal.send_as_hacker, '...então eu vou copiar os dados do computador dele')
+	terminal.prompt(terminal.send_as_hacker, 'entendeu?', 2)
+	terminal.prompt(terminal.send_as_hacker, 'entendeu?')
+	terminal.prompt(terminal.send_as_hacker, 'é engraçado porque esse idiota é você')
+	terminal.prompt(terminal.send_as_hacker, 'enfim, aproveite seus últimos momentos de paz...')
+	terminal.prompt(terminal.send_as_hacker, '...porque em breve, o histórico do seu navegador será público', 3)
 
 	time.append(terminal.clear_buffer, 6)
 
-	scene.prompt(terminal.send_unknown, 'Macacos me mordam! Ora que infortúnio! [O_O]', 5)
-	scene.prompt(terminal.send_unknown, 'O seu computador acaba de ser invadido por um usuário malicioso! [U~U]', 2)
-	scene.prompt(terminal.send_unknown, 'Sorte a sua que o seu plano de antivírus contém auxílio de Inteligência Artificial! [^v^]', 3)
-	scene.prompt(terminal.send_as_amy, 'O meu nome é Amy, e eu sou a I.A. designada para o seu caso. [O_^]')
-	scene.prompt(terminal.send_as_amy, 'Não precisa ter medo. Eu não mordo. [^_^]')
-	scene.prompt(terminal.send_as_amy, 'Pelo menos não na maioria das vezes. [O///O]')
-	scene.prompt(terminal.send_as_amy, 'Você pode começar digitando \'help\' para listar todos os comandos disponíveis. [UwU]', 3)
+	terminal.prompt(terminal.send_unknown, 'Macacos me mordam! Ora que infortúnio! [O_O]', 5)
+	terminal.prompt(terminal.send_unknown, 'O seu computador acaba de ser invadido por um usuário malicioso! [U~U]', 2)
+	terminal.prompt(terminal.send_unknown, 'Sorte a sua que o seu plano de antivírus contém auxílio de Inteligência Artificial! [^v^]', 3)
+	terminal.prompt(terminal.send_as_amy, 'O meu nome é Amy, e eu sou a I.A. designada para o seu caso. [O_^]')
+	terminal.prompt(terminal.send_as_amy, 'Não precisa ter medo. Eu não mordo. [^_^]')
+	terminal.prompt(terminal.send_as_amy, 'Pelo menos não na maioria das vezes. [O///O]')
+	terminal.prompt(terminal.send_as_amy, 'Você pode começar digitando \'help\' para listar todos os comandos disponíveis. [UwU]', 3)
 
-	time.append(function ()
-		terminal.input_callback = scene.parse
-	end, 0)
+	time.append(function() terminal.input_callback = scene.parse end, 0)
 
 	time.append(terminal.unlock, 0)
 end
@@ -179,14 +168,14 @@ function scene.parse(command)
 
 		time.append(
 			function ()
-				terminal.send_no_label('')
-				terminal.send_as_amy('Você pode começar digitando \'help\' para listar todos os comandos disponíveis. [UwU]')
+				terminal.send_no_label ''
+				terminal.send_as_amy   'Você pode começar digitando \'help\' para listar todos os comandos disponíveis. [UwU]'
 		end, 3)
 
 		return
 	end
 
-	terminal.send_no_label('O comando que você tentou executar não existe.')
+	terminal.send_no_label 'O comando que você tentou executar não existe.'
 end
 
 ------------------------ Sync the other methods
