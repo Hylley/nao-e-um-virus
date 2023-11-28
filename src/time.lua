@@ -1,32 +1,24 @@
 module = {}
 
 local paused = false
-local scheduled = {}
+local timeline = {}
 
-local after_time = 0
 local multiplier = 1
 
 function module.tick(delta)
-	if paused then return end
-	
-	for callback, lifetime in pairs(scheduled) do
-		if lifetime <= 0 then
-			callback()
-			scheduled[callback] = nil
-		else
-			scheduled[callback] = lifetime - delta * multiplier
-		end
+	if paused or #timeline <= 0 then return end
+
+	local head = timeline[1]
+	head.seconds = head.seconds - delta
+
+	if head.seconds <= 0 then
+		timeline[1].callback()
+		table.remove(timeline, 1)
 	end
 end
 
-function module.schedule(callback, seconds)
-	local lambda = function() callback() end -- Forgive me Father for I'm about to sin
-	scheduled[lambda] = seconds
-end
-
-function module.after(seconds)
-	after_time = after_time + seconds
-	return after_time
+function module.append(callback, seconds)
+	timeline[#timeline + 1] = {callback = callback, seconds = seconds}
 end
 
 function module.stop()
