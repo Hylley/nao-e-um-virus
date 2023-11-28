@@ -1,5 +1,5 @@
 function love.conf(t)
-	t.console = false
+	t.console = true
 	t.window.icon = 'assets/images/icons/defender.png'
 	
 	t.window.title = 'não-é-um-virus.exe'

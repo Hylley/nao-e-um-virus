@@ -35,6 +35,8 @@ if %1==run (
 
 	:: Cleanup
 	rmdir /s /q tmp
+	cls
 
 	if %2==run "build\x64\%executable%.exe"
+	cls
 	exit /B

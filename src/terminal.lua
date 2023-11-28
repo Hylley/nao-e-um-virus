@@ -1,5 +1,9 @@
-local utf8 = require("utf8")
+local utf8 = require'utf8'
+local time = require 'time'
 local scene = {}
+
+local user = nil
+local hacker = nil
 
 local scroll_sensitivity = 30
 local scroll_offset = 0
@@ -38,6 +42,11 @@ function scene.load()
 
 	close_button = love.graphics.newImage("assets/images/icons/white_close.png")
 	scroll_limit.bottom = 0
+end
+
+function scene.set_data(new_user, new_hacker, command_callback)
+	user = new_user
+	hacker = new_hacker
 end
 
 function scene.draw()
@@ -91,15 +100,55 @@ function scene.draw()
 	end
 end
 
+function scene.send_as_user(text)
+	scene.append_to_buffer(user.id, text, {1, .7, 0, 1})
+end
+
+function scene.send_as_system(text)
+	scene.append_to_buffer('SISTEMA', text, {.3, .8, .9, 1})
+end
+
+function scene.send_as_hacker(text)
+	scene.append_to_buffer(hacker.id, text, {.9, .3, .5, 1})
+end
+
+function scene.send_unknown(text)
+	scene.append_to_buffer('???', text, {.6, .6, .6, 1})
+end
+
+function scene.send_as_amy(text)
+	scene.append_to_buffer('AMY', text, {0, 1, .4, 1})
+end
+
+function scene.send_no_label(text)
+	scene.append_to_buffer(nil, text, nil)
+end
+
+function scene.descend()
+	scroll_offset = 0
+end
+
+function scene.clear_buffer()
+	buffer = {}
+	scroll_offset = 0
+	scroll_limit.top = 0
+	scroll_limit.bottom = 0
+end
+
+function scene.lock()
+	locked = true
+	input_text = ''
+end
+
+function scene.unlock()
+	locked = false
+end
+
 function scene.wheelmoved(x, y)
 	if y < 0 and scroll_offset <= scroll_limit.bottom then return end
 	if y > 0 and math.abs(scroll_offset) >= math.abs(scroll_limit.top) then return end
 
 	scroll_offset = scroll_offset + y * scroll_sensitivity
-end
-
-function scene.descend()
-	scroll_offset = 0
 end
 
 function scene.mousemoved(x, y, dx, dy, istouch)
@@ -121,7 +170,14 @@ function scene.mousepressed(x, y, k, istouch)
 end
 
 function scene.keypressed(key)
-    if not locked and key == 'backspace' then
+    if key == 'space' then
+		time.forward()
+		return
+	end
+
+	if locked then return end
+
+	if key == 'backspace' then
         local byteoffset = utf8.offset(input_text, -1)
 
         if byteoffset then
@@ -132,10 +188,17 @@ function scene.keypressed(key)
 		return
     end
 
-	if not locked and key == 'return' and scene.input_callback ~= nil then
+	if key == 'return' and scene.input_callback ~= nil then
 		scene.input_callback(input_text)
 		input_text = ''
 		enter_sound:play()
+	end
+end
+
+function love.keyreleased(key)
+	if key == 'space' then
+		time.backward()
+		return
 	end
 end
 
@@ -143,22 +206,6 @@ function scene.textinput(t)
 	if locked then return end
     input_text = input_text .. t
 	key_sound:play()
-end
-
-function scene.reset_buffer()
-	buffer = {}
-	scroll_offset = 0
-	scroll_limit.top = 0
-	scroll_limit.bottom = 0
-end
-
-function scene.lock()
-	locked = true
-	input_text = ''
-end
-
-function scene.unlock()
-	locked = false
 end
 
 return scene
