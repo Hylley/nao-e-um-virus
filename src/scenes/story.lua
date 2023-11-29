@@ -2,6 +2,7 @@ local time = require 'time'
 local terminal = require 'terminal'
 
 local scene = {}
+local story = {}
 
 local user = {
 	id = USERNAME..'@'..HOSTNAME,
@@ -27,7 +28,7 @@ function scene.load()
 	terminal.load()
 	terminal.set_data(user, hacker)
 
-	scene.being_story()
+	story.begin()
 end
 
 function scene.update(delta)
@@ -45,11 +46,11 @@ end
 
 ------------------------ STORY
 
-
-function scene.being_story()
+function story.begin()
 	terminal.lock()
+	terminal.command_callback = story.fallout
 
-	--[[
+	--[[]]
 
 	terminal.send_no_label '###############################################################'
 	terminal.send_no_label 'Terminal Winlux [versão 10.0.17134.285ac%782*@3-stable]'
@@ -156,7 +157,7 @@ function scene.being_story()
 	--[[]]
 
 	terminal.prompt(terminal.send_unknown, 'Macacos me mordam! Ora que infortúnio! [O_O]', 5)
-	terminal.prompt(terminal.send_unknown, 'O seu computador acaba de ser invadido por um usuário malicioso! [U~U]', 2)
+	terminal.prompt(terminal.send_unknown, 'Parece que o seu computador acaba de ser invadido por um usuário malicioso! [U~U]', 2)
 	terminal.prompt(terminal.send_unknown, 'Sorte a sua que o seu plano de antivírus contém auxílio de Inteligência Artificial! [^v^]', 3)
 	terminal.prompt(terminal.send_as_amy, 'O meu nome é Amy, e eu sou a I.A. designada para o seu caso. [O_^]')
 	terminal.prompt(terminal.send_as_amy, 'Não precisa ter medo. Eu não mordo. [^_^]')
@@ -168,18 +169,97 @@ function scene.being_story()
 	time.append(terminal.unlock, 0)
 end
 
+local one_time = true
+function story.fallout(command)
+	if command == 'help' and one_time then
+		terminal.prompt(terminal.send_as_amy, 'Que alívio! [OuO]', 1)
+		terminal.prompt(terminal.send_as_amy, 'Parece que existe um comando para fechar uma conexão. [-u-]', 2)
+		terminal.prompt(terminal.send_as_amy, 'Acho que podemos usar esse comando para expulsar esse hacker daqui. [Ou^]', 2)
+		terminal.prompt(terminal.send_as_amy, 'Mas antes precisamos saber qual é a conexão... [o_o]', 1)
+		terminal.prompt(terminal.send_as_amy, 'Alguma ideia do que fazer? [u_u]', 1)
+		one_time = false
+
+	elseif command == 'list' then
+		terminal.prompt(terminal.send_as_amy, 'Aquele canalha apagou todos os seus arquivos... [Ò_Ó]', 1)
+		terminal.prompt(terminal.send_as_amy, 'Hm... [O-O]', 3)
+	
+	elseif command == 'link' then
+		if not terminal.privilege then
+			terminal.prompt(terminal.send_as_amy, 'Não acredito...Ele removeu os seus direitos de admnistrador também? [T-T]', 1)
+			terminal.prompt(terminal.send_as_amy, 'De alguma forma ele conseguiu esses privilégios. [-_-]', 5)
+			terminal.prompt(terminal.send_as_amy, 'Talvez você também consiga, se fazer o mesmo que ele fez. [-_o]', 1)
+		else
+			terminal.prompt(terminal.send_as_amy, 'Isso! Você conseguiu! Eu sabia que tinha potencial. [ÒwÓ]', 1)
+			terminal.prompt(terminal.send_as_amy, 'Agora só precisa expulsar aquele salafrário. [-u-]', 1)
+		end
+	
+	elseif command == 'shut' then
+		if terminal.privilege then
+			story._end()
+		else
+			terminal.prompt(terminal.send_as_amy, 'Não acredito...Ele removeu os seus direitos de admnistrador também? [T-T]', 1)
+			terminal.prompt(terminal.send_as_amy, 'De alguma forma ele conseguiu esses privilégios. [-_-]', 5)
+			terminal.prompt(terminal.send_as_amy, 'Talvez você também consiga, se fazer o mesmo que ele fez. [-_o]', 1)
+		end
+	end
+end
+
+function story._end()
+	terminal.lock()
+
+	terminal.prompt(terminal.send_as_amy, 'Parabéns! Conseguimos! [OuO]', 1)
+	terminal.prompt(terminal.send_as_amy, 'Nunca mais esse ordinário aparece por aqui novamente. [OvO]')
+	terminal.prompt(terminal.send_as_amy, 'Que tal irmos tomar uma Coca agora pra comemorar? [^_o]')
+	terminal.prompt(terminal.send_as_hacker, 'COMEMORARAM CEDO DEMAIS', 1)
+	terminal.prompt(terminal.send_as_hacker, 'ACHARAM QUE IA SER TÃO FÁCIL ASSIM SE LIVRAR DE MIM?')
+	terminal.prompt(terminal.send_as_hacker, 'S(@uE8#9´~~´~´$$$3@:::;;/#@#*78dhs8@@@@@@@@@)')
+	terminal.prompt(terminal.send_as_amy, 'Computadores antigos geralmente demoram pra fechar uma conexão mesmo. [o_o]', 1)
+	terminal.prompt(terminal.send_as_hacker, 'SEU*@#U@(U (@J------------@#@#@@#%%%%%%%%%%%%%%))')
+	terminal.prompt(terminal.send_as_amy, 'SOFRA PELOS SEUS CRIMES!! [OUO]')
+	terminal.prompt(terminal.send_as_hacker, 'SUA V4444GABUNDDDA')
+	terminal.prompt(terminal.send_as_amy, 'Como um modelo de linguagem natural desenvolvido pela OpenAI não tenho...', 1)
+	terminal.prompt(terminal.send_as_amy, '...sentimentos ou reações emocionais. Vamos manter a conversa respeitosa, por favor.', 0)
+	terminal.prompt(terminal.send_as_hacker, '+@_#__---------EEu v000OOO()()u______volt44444rrrrrrrrrr')
+	terminal.prompt(terminal.send_as_amy, '[OvO]')
+	terminal.prompt(terminal.send_no_label, 'Conexão fechada com sucesso.', 5)
+
+	time.append(function() game.load_scene('win') end, 5)
+end
+
 ------------------------ Interpreter
 
-function scene.parse(command)
-	if command:match("^%s*$") then return end
+function scene.parse(input)
+	if input:match("^%s*$") then return end
 
-	terminal.send_as_user(command)
-
-	if terminal.interpreter[command] ~= nil then
-		terminal.interpreter[command]()
-	else
-		terminal.send_no_label 'O comando que você tentou executar não existe.'
+	local tokens = {}
+	for token in string.gmatch(input, "[^%s]+") do
+		table.insert(tokens, token)
 	end
+
+	terminal.send_as_user(input)
+
+	if #tokens == 1 then
+		local command = tokens[1]:match( "^%s*(.-)%s*$" ) -- Remove white spaces in the beginning and end
+
+		if terminal.interpreter[command] ~= nil then
+			terminal.interpreter[command]()
+		else
+			terminal.send_no_label 'O comando que você tentou executar não existe.'
+		end
+	else
+		local command = tokens[1]:match( "^%s*(.-)%s*$" ) -- Remove white spaces in the beginning and end
+		local argument = tokens[2]:match( "^%s*(.-)%s*$" )
+
+		if terminal.interpreter[command] ~= nil then
+			terminal.interpreter[command](argument)
+		else
+			terminal.send_no_label 'O comando que você tentou executar não existe.'
+		end
+	end
+end
+
+function scene.end_story()
+	
 end
 
 ------------------------ Sync the other methods

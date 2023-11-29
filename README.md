@@ -3,9 +3,11 @@
 ## Visão geral
 
 ## Requisitos do sistema
-O requisito mínimo para executar o jogo é ter um sistema compatível com OpenGL 2.1+ ou OpenGL ES 2+, além dos drivers gráficos relevantes. Nas três principais plataformas de desktop (Linux, macOS e Windows), o OpenGL geralmente está integrado ao sistema. No entanto, será necessário baixar e instalar um driver recente para o seu hardware gráfico caso ocorram erros de inicialização.
+O requisito mínimo para executar o jogo é ter um sistema compatível com OpenGL 2.1+ ou OpenGL ES 2+, além dos drivers gráficos relevantes. Nas três principais plataformas de desktop (Linux, macOS e Windows), o OpenGL geralmente está integrado ao sistema. No entanto, será necessário baixar e instalar um driver recente para o seu hardware gráfico caso ocorram erros de inicialização:
 
-Para instalar os drivers necessários, bem como verificar a compatibilidade do seu sistema, consulte a [página oficial de download do OpenGL](https://www.khronos.org/opengl/wiki/Getting_Started#Downloading_OpenGL).
+- Para instalar os drivers necessários para placas de vídeo, bem como verificar a compatibilidade do seu sistema, consulte a [página oficial de download do OpenGL](https://www.khronos.org/opengl/wiki/Getting_Started#Downloading_OpenGL).
+
+- Se estiver com erro na inicialização no Windows (comuns em ambientes de máquina virtual), considere atualizar o OpenGL [extraindo esse arquivo](https://github.com/pal1000/mesa-dist-win/releases/download/23.3.0-rc5/mesa3d-23.3.0-rc5-release-msvc.7z) e executando `systemwidedeploy.cmd`.
 
 ## Instalação
 Após verificar todos os requisitos, você pode baixar a versão compatível com o seu sistema na [aba de lançamentos](https://github.com/Hylley/nao-e-um-virus/releases) e clicar duas vezes no executável `não-é-um-vírus.exe`. Se tudo correr bem, o jogo será executado.

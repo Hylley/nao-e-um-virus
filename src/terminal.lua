@@ -6,6 +6,9 @@ local scene = {}
 local user = {}
 local hacker = {}
 scene.interpreter = {}
+scene.privilege = false
+scene.connection_shut = false
+scene.command_callback = null
 
 local scroll_sensitivity = 30
 local scroll_offset = 0
@@ -13,15 +16,17 @@ local scroll_limit = {top = 0, bottom = 0}
 local buffer = {}
 local locked = false
 
-local terminal_font = 'assets/fonts/vt323-latin-400-normal.ttf'
+local terminal_font = 'assets/fonts/_decterm.ttf'
 local input_text = ''
-scene.input_callback = nil
 
-local key_sound = love.audio.newSource('assets/sounds/key.wav', 'static'); key_sound:setVolume(.2)
-local backspace_sound = love.audio.newSource('assets/sounds/backspace.wav', 'static'); backspace_sound:setVolume(.2)
-local enter_sound = love.audio.newSource('assets/sounds/enter.wav', 'static'); backspace_sound:setVolume(.2)
-local new_message_sound = love.audio.newSource('assets/sounds/new_message.wav', 'static'); backspace_sound:setVolume(.3)
-local clear_terminal_sound = love.audio.newSource('assets/sounds/clear_terminal.wav', 'static'); backspace_sound:setVolume(.1)
+scene.input_callback = nil
+scene.file_drop_callback = nil
+
+local key_sound =            love.audio.newSource('assets/sounds/key.wav', 'static'           ); key_sound:setVolume(.2)
+local backspace_sound =      love.audio.newSource('assets/sounds/backspace.wav', 'static'     ); backspace_sound:setVolume(.2)
+local enter_sound =          love.audio.newSource('assets/sounds/enter.wav', 'static'         ); enter_sound:setVolume(.2)
+local new_message_sound =    love.audio.newSource('assets/sounds/new_message.wav', 'static'   ); new_message_sound:setVolume(.3)
+local clear_terminal_sound = love.audio.newSource('assets/sounds/clear_terminal.wav', 'static'); clear_terminal_sound:setVolume(.1)
 
 local close_button
 
@@ -125,38 +130,89 @@ end
 function scene.interpreter.help()
 	scene.send_no_label 'help            | Mostra os comandos disponívels;'
 	scene.send_no_label 'wipe            | Limpa o terminal;'
-	scene.send_no_label 'list            | Lista os arquivos e diretórios do caminho atual;'
-	scene.send_no_label 'move (caminho)  | Muda para o diretório especificado;'
+	scene.send_no_label 'list            | Lista os arquivos e diretórios do sistema;'
 	scene.send_no_label 'open (caminho)  | Abre ou executa o arquivo especificado;'
 	scene.send_no_label 'info (caminho)  | Mostra informações sobre um diretório ou arquivo;'
 	scene.send_no_label 'link            | Mostra todas as conexões à rede ativas;'
 	scene.send_no_label 'shut (conexão)  | Desliga uma conexão à força.'
+
+	scene.command_callback('help')
 end
 
 function scene.interpreter.wipe() scene.clear_buffer() end
 
 function scene.interpreter.list()
-	
-end
+	scene.send_no_label '.'
+	scene.send_no_label '└── início'
+	scene.send_no_label '    ├── transferências'
+	scene.send_no_label '    │    └── escalar_privilégio.exe'
+	scene.send_no_label '    └── documentos'
 
-function scene.interpreter.move(path)
-	
+	scene.command_callback('list')
 end
 
 function scene.interpreter.open(path)
+	local tokens = {}
+	for token in string.gmatch(path, "([^/]+)") do
+		table.insert(tokens, token)
+	end
+
+	if tokens[1] == '.' then table.remove(tokens, 1) end
 	
+	if #tokens < 3 or #tokens > 3 then
+		scene.send_no_label 'O arquivo especificado não existe.'
+		return
+	end
+
+	if tokens[1] ~= 'início' or tokens[2] ~= 'transferências' or tokens[3] ~=  'escalar_privilégio.exe' then
+		scene.send_no_label 'O arquivo especificado não existe.'
+		return
+	end
+
+	if not scene.privilege then
+		scene.privilege = true
+		scene.send_no_label 'Você agora possui privilégios de admnistrador.'
+		return
+	else
+		scene.send_no_label 'Você já possui privilégios de admnistrador.'
+	end
 end
 
 function scene.interpreter.info(path)
-	
+	if tokens[1] ~= 'início' or tokens[2] ~= 'transferências' or tokens[3] ~=  'escalar_privilégio.exe' then
+		scene.send_no_label 'O arquivo especificado não existe.'
+		return
+	end
+
+	scene.send_no_label 'Este arquivo foi sincronizado pela rede hoje.'
 end
 
 function scene.interpreter.link()
-	scene.send_no_label 'Você não tem permissão para executar esse comando.'
+	if not scene.privilege then
+		scene.send_no_label 'Você não possui permissão para executar esse comando.'
+		scene.command_callback('link')
+		return
+	end
+
+	if not connection_shut then
+		scene.send_no_label (hacker.ip .. ':' .. tostring(hacker.port))
+	end
+
+	scene.command_callback('link')
 end
 
 function scene.interpreter.shut(connection)
-	scene.send_no_label 'Você não tem permissão para executar esse comando.'
+	if not scene.privilege then
+		scene.send_no_label 'Você não possui permissão para executar esse comando.'
+		return
+	end
+
+	if connection == hacker.ip .. ':' .. tostring(hacker.port) then
+		scene.send_no_label 'Finalizando conexão...'
+		scene.command_callback('shut')
+	else
+		scene.send_no_label 'Você precisa especificar uma conxexão.'
+	end
 end
 
 
@@ -244,6 +300,14 @@ function scene.textinput(t)
 	if locked then return end
     input_text = input_text .. t
 	key_sound:play()
+end
+
+function scene.filedropped(file)
+	file:open("r")
+	local data = file:read()
+
+	if scene.file_drop_callback == nil then return end
+	scene.file_drop_callback(file:getFilename(), data)
 end
 
 return scene
