@@ -3,15 +3,15 @@
 ## Visão geral
 Recentemente, assisti a um [vídeo do GT Live sobre um jogo chamado Outcore](https://youtu.be/fgdQdBQmhXU?si=lOthmH7r1aLDPGUf) que utiliza o desktop — bloco de notas, paint e outras funcionalidades nativas do Windows — como ambiente do jogo, e fiquei apaixonado pela ideia. É algo tão simples, mas pouco explorado devido a questões de compatibilidade. Depois de conhecer a [RetroJam](https://youtu.be/N31GWL9G4A4?si=apMUyDtsA06biokv), pensei que seria interessante fazer uma mistura entre os dois conceitos e aproveitar para aprender um novo framework.
 
+## Instalação
+Você pode baixar a versão compatível com o seu sistema (64 bits ou 32/86 bits) na [aba de lançamentos](https://github.com/Hylley/nao-e-um-virus/releases).Basta executar o arquivo `não-é-um-vírus.exe`. Se tudo correr bem, o jogo será executado.
+
 ## Requisitos do sistema
 O requisito mínimo para executar o jogo são os mesmos do LÖVE: ter um sistema compatível com OpenGL 2.1+ ou OpenGL ES 2+, além dos drivers gráficos relevantes. Nas três principais plataformas de desktop (Linux, macOS e Windows), o OpenGL geralmente vem integrado ao sistema. No entanto, será necessário baixar e instalar um driver recente para o seu hardware gráfico caso ocorram erros de inicialização:
 
 - Para instalar os drivers necessários para placas de vídeo e verificar a compatibilidade do seu sistema, consulte a [página oficial de download do OpenGL](https://www.khronos.org/opengl/wiki/Getting_Started#Downloading_OpenGL).
 
 - Se ocorrerem erros na inicialização no Windows em ambiente de máquina virtual, considere atualizar o OpenGL [extraindo esse arquivo](https://github.com/pal1000/mesa-dist-win/releases/download/23.3.0-rc5/mesa3d-23.3.0-rc5-release-msvc.7z) e executando `systemwidedeploy.cmd`.
-
-## Instalação
-Após verificar todos os requisitos, você pode baixar a versão compatível com o seu sistema na [aba de lançamentos](https://github.com/Hylley/nao-e-um-virus/releases) e clicar duas vezes no executável `não-é-um-vírus.exe`. Se tudo correr bem, o jogo será executado.
 
 ## Construção
 ### Dependências
